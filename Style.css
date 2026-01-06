@@ -1,0 +1,115 @@
+body {
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0d1829 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    background: linear-gradient(135deg, #0f1b2e 0%, #162a42 100%);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 150, 255, 0.2), 0 0 60px rgba(0, 200, 255, 0.1);
+    padding: 40px;
+    text-align: center;
+    max-width: 300px;
+    border: 2px solid #00d4ff;
+}
+
+h1 {
+    color: #00ffff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    font-size: 32px;
+    font-weight: bold;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #b0e0ff;
+}
+
+button {
+    background: linear-gradient(135deg, #0088ff 0%, #00d4ff 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 12px 30px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #00d4ff 0%, #00ffff 100%);
+    box-shadow: 0 6px 25px rgba(0, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+@keyframes sparkle {
+    0% { box-shadow: 0 0 10px #0088ff; }
+    50% { box-shadow: 0 0 30px #00d4ff, 0 0 50px #00ffff; }
+    100% { box-shadow: 0 0 10px #0088ff; }
+}
+
+button.magical {
+    animation: sparkle 1.5s infinite;
+}
+
+@media (max-width: 400px) {
+    .card {
+        max-width: 90%;
+        padding: 25px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    p {
+        font-size: 16px;
+    }
+    button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+}
+
+.heart-fall {
+    position: fixed;
+    top: -10%;
+    left: 50%;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1000;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    0% {
+        top: -10%;
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    25% {
+        transform: translateX(20px) rotate(20deg);
+    }
+    50% {
+        transform: translateX(-20px) rotate(-20deg);
+    }
+    75% {
+        transform: translateX(20px) rotate(10deg);
+    }
+    100% {
+        top: 110%;
+        transform: translateX(0) rotate(45deg);
+        opacity: 0;
+    }
+}
