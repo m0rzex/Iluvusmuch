@@ -34,21 +34,30 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function createHearts() {
-    for (let i = 0; i < 30; i++) {
+    let count = 0;
+    const maxHearts = 30;
+    
+    
+    const interval = setInterval(() => {
         const heart = document.createElement('div');
         heart.classList.add('heart-fall');
         heart.innerHTML = '❤️';
         heart.style.left = Math.random() * 100 + '%';
-        heart.style.fontSize = Math.random() * 30 + 25 + 'px';
-        heart.style.color = `hsl(${180 + Math.random() * 60}, 100%, ${50 + Math.random() * 20}%)`;
-        heart.style.textShadow = `0 0 ${Math.random() * 20 + 10}px currentColor, 0 0 ${Math.random() * 30 + 20}px rgba(0, 212, 255, 0.5)`;
-        heart.style.filter = 'drop-shadow(0 0 10px rgba(0, 212, 255, 0.6))';
-        const duration = Math.random() * 3 + 3;
+        heart.style.fontSize = Math.random() * 20 + 20 + 'px'; 
+        
+        
+        heart.style.color = "#00ffff"; 
+        
+        const duration = Math.random() * 2 + 3;
         heart.style.animationDuration = duration + 's';
+        
         document.body.appendChild(heart);
         
         setTimeout(() => heart.remove(), duration * 1000);
-    }
+        
+        count++;
+        if (count >= maxHearts) clearInterval(interval);
+    }, 50); 
 }
 
 function createSparkles() {
@@ -58,3 +67,4 @@ function createSparkles() {
         setTimeout(() => button.classList.remove('magical'), 1500);
     }
 }
+
