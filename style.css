@@ -85,11 +85,12 @@ button.magical {
 .heart-fall {
     position: fixed;
     top: -10%;
-    left: 50%;
     user-select: none;
     pointer-events: none;
     z-index: 1000;
-    animation: fall 3s linear forwards;
+    animation: fall linear forwards;
+    text-shadow: 0 0 10px #00ffff;
+    will-change: transform, top;
 }
 
 @keyframes fall {
@@ -113,3 +114,4 @@ button.magical {
         opacity: 0;
     }
 }
+
