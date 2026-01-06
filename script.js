@@ -41,7 +41,7 @@ function createHearts() {
     const interval = setInterval(() => {
         const heart = document.createElement('div');
         heart.classList.add('heart-fall');
-        heart.innerHTML = '❤️';
+        heart.innerHTML = '💙';
         heart.style.left = Math.random() * 100 + '%';
         heart.style.fontSize = Math.random() * 20 + 20 + 'px'; 
         
@@ -67,4 +67,5 @@ function createSparkles() {
         setTimeout(() => button.classList.remove('magical'), 1500);
     }
 }
+
 
