@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             complimentParagraph.textContent = compliments[randomIndex];
 
             
-            if (clickCount >= 22) {
+            if (clickCount >= 5) {
                 musicControl.classList.remove('hidden');
                 musicControl.classList.add('visible');
             }
