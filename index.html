@@ -7,12 +7,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="card">
         <h1>Veronica!</h1>
         <p>You look amazing today ✨</p>
         <button id="magicButton">Click me</button>
+        
+        <div id="music-control" class="hidden">
+            <span id="speaker-icon">😊</span>
+        </div>
     </div>
+
+    <audio id="myAudio" loop>
+        <source src="sailorlove.mp3" type="audio/mpeg">
+    </audio>
+
     <script src="script.js"></script>
 </body>
 </html>
