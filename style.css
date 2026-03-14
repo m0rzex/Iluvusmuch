@@ -94,27 +94,27 @@ button.magical {
 }
 
 #music-control {
-    margin-top: 15px; /* Отступ от основной кнопки */
+    margin-top: 15px;
     cursor: pointer;
-    font-size: 20px; /* Уменьшили размер, чтобы не бросался в глаза */
+    font-size: 20px; 
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10px; /* Ограничили ширину */
+    width: 10px;
     height: 10px;
-    margin-left: auto; /* Центрируем блок */
+    margin-left: auto;
     margin-right: auto;
 }
 
 #music-control.hidden {
     opacity: 0;
-    transform: scale(0) translateY(-20px); /* Прячем чуть выше */
+    transform: scale(0) translateY(-20px);
     pointer-events: none;
 }
 
 #music-control.visible {
-    opacity: 0.8; /* Делаем чуть прозрачным, чтобы было эстетично */
+    opacity: 0.8;
     transform: scale(1) translateY(0);
     pointer-events: auto;
 }
