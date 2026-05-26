@@ -1,32 +1,93 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const card = document.getElementById('mainCard');
     const magicButton = document.getElementById('magicButton');
-    const compliments = [
-        "You look amazing today ✨",
-        "Your smile lights up the room! 😊",
-        "You have a heart of gold! 💖",
-        "Your style is impeccable! 👗",
-        "You're truly one of a kind! 🌟",
-        "You bring out the best in others! 🌈",
-        "Your positivity is infectious! 🌼",
-        "You are a ray of sunshine! ☀️",
-        "You have a great sense of humor! 😂",
-        "You are so talented! 🎨",
-        "Your kindness is a gift to everyone! 🎁"
+    const stepText = document.getElementById('stepText');
+    const nameHeader = document.querySelector('.blurred-name');
+    const decisionButtons = document.getElementById('decisionButtons');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    
+    const words = [
+        "Andreea",
+        "Andreea, I",
+        "Andreea, I love",
+        "Andreea, I love u",
+        "Andreea, I love u so",
+        "Andreea, I love u so much...",
+        "Andreea, I love u so much... Do",
+        "Andreea, I love u so much... Do u",
+        "Andreea, I love u so much... Do u wanna",
+        "Andreea, I love u so much... Do u wanna be",
+        "Andreea, I love u so much... Do u wanna be my",
+        "Andreea, I love u so much... Do u wanna be my girlfriend? 🌹"
     ];
-    const complimentParagraph = document.querySelector('.card p');
-    let lastIndex = -1; 
+    
+    let currentStep = -1;
+
+    // Функция, срабатывающая при успешном согласии
+    function handleYesScenario() {
+        stepText.textContent = "You made me the happiest person! 🥰❤️";
+        decisionButtons.style.display = 'none';
+        setInterval(createHearts, 300); // Бесконечный праздничный спавн сердец
+    }
+
+    // Функция трансформации кнопки "No" в кнопку "Yes"
+    function transformNoToYes() {
+        if (noBtn && !noBtn.classList.contains('transformed')) {
+            noBtn.classList.add('transformed');
+            noBtn.textContent = "Yes! 💖";
+            // Меняем стили через JS, чтобы они соответствовали кнопке Yes
+            noBtn.style.background = "linear-gradient(135deg, #9f1239 0%, #4c0519 100%)";
+            noBtn.style.borderColor = "#f43f5e";
+            noBtn.style.color = "#ffffff";
+            noBtn.style.boxShadow = "0 0 25px rgba(225, 29, 72, 0.7)";
+            noBtn.style.position = "static"; // Возвращаем в поток, если она успела сдвинуться
+        }
+    }
 
     if (magicButton) {
         magicButton.addEventListener('click', function() {
-            createHearts();
-            createSparkles();
-            if (complimentParagraph) {
-                let randomIndex;
-                do {
-                    randomIndex = Math.floor(Math.random() * compliments.length);
-                } while (randomIndex === lastIndex);
-                lastIndex = randomIndex;
-                complimentParagraph.textContent = compliments[randomIndex];
+            currentStep++;
+
+            if (currentStep === 0) {
+                card.classList.remove('initial-blur');
+            }
+
+            if (currentStep < words.length) {
+                stepText.textContent = words[currentStep];
+                createSparkles();
+            }
+
+            if (currentStep === words.length - 1) {
+                if (nameHeader) {
+                    nameHeader.classList.remove('blurred-name');
+                }
+                magicButton.style.display = 'none';
+                
+                if (decisionButtons) {
+                    decisionButtons.classList.add('visible');
+                }
+                
+                createHearts();
+            }
+        });
+    }
+
+    if (yesBtn) {
+        yesBtn.addEventListener('click', handleYesScenario);
+    }
+
+    if (noBtn) {
+        // При попытке навести мышь кнопка мгновенно превращается в "Yes"
+        noBtn.addEventListener('mouseover', transformNoToYes);
+        
+        // Для мобильных устройств (где нет mouseover) или если успели нажать
+        noBtn.addEventListener('click', function(e) {
+            if (!noBtn.classList.contains('transformed')) {
+                e.preventDefault();
+                transformNoToYes();
+            } else {
+                handleYesScenario();
             }
         });
     }
@@ -34,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function createHearts() {
     let count = 0;
-    const maxHearts = 30;
+    const maxHearts = 35;
     
     const interval = setInterval(() => {
         const heart = document.createElement('div');
@@ -52,12 +113,12 @@ function createHearts() {
         
         count++;
         if (count >= maxHearts) clearInterval(interval);
-    }, 50); 
+    }, 60); 
 }
 
 function createSparkles() {
     const button = document.getElementById('magicButton');
-    if (button) {
+    if (button && button.style.display !== 'none') {
         button.classList.add('magical');
         setTimeout(() => button.classList.remove('magical'), 1500);
     }
