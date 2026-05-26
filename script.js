@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Функция для первого шага — раскрытия квадрата
+    // Функция активации и раскрытия
     function revealCard() {
         if (currentStep === -1) {
             currentStep = 0;
@@ -54,27 +54,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Надежная обработка клика по самому заблюренному квадрату
+    // Клик по самой карточке (работает для заблюренного квадрата)
     if (card) {
         card.addEventListener('click', function(e) {
             if (currentStep === -1) {
                 revealCard();
-                e.stopPropagation(); // Останавливаем всплытие, чтобы не сработало дважды
+                e.stopPropagation();
             }
         });
     }
 
+    // Клик по кнопке (для последующих шагов)
     if (magicButton) {
         magicButton.addEventListener('click', function(e) {
-            // Если каким-то образом кликнули по кнопке раньше раскрытия карточки
             if (currentStep === -1) {
                 revealCard();
                 return;
             }
 
             currentStep++;
-
-            // Индекс для массива слов
             const wordIndex = currentStep - 1;
 
             if (wordIndex < words.length) {
@@ -82,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 createSparkles();
             }
 
-            // Финал
             if (wordIndex === words.length - 1) {
                 magicButton.style.display = 'none';
                 if (decisionButtons) {
