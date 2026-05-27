@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const card = document.getElementById('mainCard');
     const magicButton = document.getElementById('magicButton');
     const stepText = document.getElementById('stepText');
-    const nameHeader = document.querySelector('.blurred-name');
+    const nameHeader = document.getElementById('andreeaName');
+    const placeholder = document.querySelector('.secret-placeholder');
     const decisionButtons = document.getElementById('decisionButtons');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
@@ -26,66 +27,83 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleYesScenario() {
         stepText.textContent = "You made me the happiest person! 🥰❤️";
         decisionButtons.style.display = 'none';
+        stepText.style.margin = "0"; 
         setInterval(createHearts, 300);
     }
 
-    function transformNoToYes() {
-        if (noBtn && !noBtn.classList.contains('transformed')) {
-            noBtn.classList.add('transformed');
-            noBtn.textContent = "Yes! 💖";
-            noBtn.style.background = "linear-gradient(135deg, #9f1239 0%, #4c0519 100%)";
-            noBtn.style.borderColor = "#f43f5e";
-            noBtn.style.color = "#ffffff";
-            noBtn.style.boxShadow = "0 0 25px rgba(225, 29, 72, 0.7)";
-            noBtn.style.position = "static";
+    // Функция плавного поглощения кнопки "No"
+    function absorbNoButton(e) {
+        if (e) e.preventDefault();
+        
+        // Добавляем класс сжатия для No и класс расширения для Yes
+        if (noBtn && yesBtn) {
+            noBtn.classList.add('absorbed');
+            yesBtn.classList.add('full-width');
         }
     }
 
-    // Функция активации и раскрытия
-    function revealCard() {
-        if (currentStep === -1) {
-            currentStep = 0;
-            card.classList.remove('initial-blur');
-            if (nameHeader) {
-                nameHeader.classList.remove('blurred-name');
-                nameHeader.classList.add('moved-up');
-            }
-            createSparkles();
-        }
-    }
-
-    // Клик по самой карточке (работает для заблюренного квадрата)
+    // Первый клик по заблюренному квадрату
     if (card) {
         card.addEventListener('click', function(e) {
             if (currentStep === -1) {
-                revealCard();
+                currentStep = 0;
+                card.classList.remove('initial-blur');
+                if (placeholder) placeholder.style.display = 'none';
+                if (nameHeader) nameHeader.classList.add('visible-center');
                 e.stopPropagation();
             }
         });
     }
 
-    // Клик по кнопке (для последующих шагов)
+    // Клики по кнопке "Click me"
     if (magicButton) {
         magicButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+
             if (currentStep === -1) {
-                revealCard();
+                currentStep = 0;
+                card.classList.remove('initial-blur');
+                if (placeholder) placeholder.style.display = 'none';
+                if (nameHeader) nameHeader.classList.add('visible-center');
                 return;
             }
 
-            currentStep++;
-            const wordIndex = currentStep - 1;
-
-            if (wordIndex < words.length) {
-                stepText.textContent = words[wordIndex];
+            if (currentStep === 0) {
+                if (nameHeader) {
+                    nameHeader.classList.remove('visible-center');
+                    nameHeader.classList.add('moved-up');
+                }
+                stepText.style.opacity = "0";
+                setTimeout(() => {
+                    stepText.textContent = words[0];
+                    stepText.style.opacity = "1";
+                }, 150);
+                
                 createSparkles();
+                currentStep = 1;
+                return;
             }
 
-            if (wordIndex === words.length - 1) {
-                magicButton.style.display = 'none';
-                if (decisionButtons) {
-                    decisionButtons.classList.add('visible');
+            if (currentStep >= 1) {
+                const wordIndex = currentStep;
+
+                if (wordIndex < words.length) {
+                    stepText.style.opacity = "0";
+                    setTimeout(() => {
+                        stepText.textContent = words[wordIndex];
+                        stepText.style.opacity = "1";
+                    }, 100);
+                    createSparkles();
+                    currentStep++;
                 }
-                createHearts();
+
+                if (wordIndex === words.length - 1) {
+                    magicButton.style.display = 'none';
+                    if (decisionButtons) {
+                        decisionButtons.classList.add('visible');
+                    }
+                    createHearts();
+                }
             }
         });
     }
@@ -95,36 +113,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (noBtn) {
-        noBtn.addEventListener('mouseover', transformNoToYes);
-        noBtn.addEventListener('click', function(e) {
-            if (!noBtn.classList.contains('transformed')) {
-                e.preventDefault();
-                transformNoToYes();
-            } else {
-                handleYesScenario();
-            }
-        });
+        // Запуск поглощения при наведении (ПК), касании (смартфоны) или клике
+        noBtn.addEventListener('mouseover', absorbNoButton);
+        noBtn.addEventListener('touchstart', absorbNoButton, { passive: false });
+        noBtn.addEventListener('click', absorbNoButton);
     }
 });
 
 function createHearts() {
     let count = 0;
     const maxHearts = 35;
-    
     const interval = setInterval(() => {
         const heart = document.createElement('div');
         heart.classList.add('heart-fall');
         heart.innerHTML = '❤️';
         heart.style.left = Math.random() * 100 + '%';
         heart.style.fontSize = Math.random() * 20 + 20 + 'px'; 
-        
         const duration = Math.random() * 2 + 3;
         heart.style.animationDuration = duration + 's';
-        
         document.body.appendChild(heart);
-        
         setTimeout(() => heart.remove(), duration * 1000);
-        
         count++;
         if (count >= maxHearts) clearInterval(interval);
     }, 60); 
