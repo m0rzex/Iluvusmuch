@@ -6,6 +6,7 @@ body {
     min-height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 .card {
@@ -13,16 +14,19 @@ body {
     background: linear-gradient(135deg, #0d0105 0%, #1c030d 100%);
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(128, 15, 47, 0.25);
-    padding: 40px;
+    padding: 30px;
     text-align: center;
     width: 320px;
     max-width: 90%;
     border: 1px solid #4c0519;
-    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
 }
 
-/* Безопасный блюр через псевдоэлемент, который не ломает клики */
 .card::before {
     content: '';
     position: absolute;
@@ -30,12 +34,11 @@ body {
     background: inherit;
     filter: blur(10px);
     opacity: 0;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.5s ease;
     z-index: 1;
     pointer-events: none;
 }
 
-/* Начальное состояние: маленький заблюренный квадрат */
 .card.initial-blur {
     width: 100px;
     height: 100px;
@@ -44,59 +47,79 @@ body {
 }
 
 .card.initial-blur::before {
-    opacity: 1; /* Блюр виден только в начале */
-}
-
-/* Полностью отключаем реакцию на внутренности, пока карточка закрыта */
-.card.initial-blur * {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-/* Стартовая позиция скрытого имени */
-.blurred-name {
-    filter: blur(8px);
-    transform: translateY(30px);
-    opacity: 0;
-    transition: filter 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
-    user-select: none;
-}
-
-.blurred-name.moved-up {
-    filter: blur(0);
-    transform: translateY(0);
     opacity: 1;
 }
 
-h1 {
+.card.initial-blur h1,
+.card.initial-blur p,
+.card.initial-blur button,
+.card.initial-blur .decision-buttons {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.secret-placeholder {
+    position: absolute;
+    z-index: 3;
+    color: #fecdd3;
+    font-size: 36px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    text-shadow: 0 0 8px rgba(225, 29, 72, 0.8);
+}
+
+#andreeaName {
     color: #ffffff;
-    margin-top: 0;
-    margin-bottom: 20px;
     text-shadow: 0 0 15px rgba(225, 29, 72, 0.6);
     font-size: 32px;
     font-weight: bold;
-    position: relative;
+    margin: 0;
+    filter: blur(12px);
+    opacity: 0;
+    transition: filter 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                margin 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                opacity 0.6s ease;
+    user-select: none;
     z-index: 2;
 }
 
-p {
-    font-size: 20px;
+#andreeaName.visible-center {
+    opacity: 0.7;
+    filter: blur(8px);
+    margin-top: 45px;
     margin-bottom: 25px;
+}
+
+#andreeaName.moved-up {
+    opacity: 1;
+    filter: blur(0);
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 19px;
+    margin-top: 0;
+    margin-bottom: 20px;
     color: #e2e8f0;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     font-weight: 500;
-    line-height: 1.5;
-    min-height: 90px;
+    line-height: 1.4;
+    min-height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.2s ease;
     position: relative;
     z-index: 2;
+    width: 100%;
 }
 
 button {
@@ -107,7 +130,7 @@ button {
     cursor: pointer;
     font-size: 16px;
     padding: 12px 30px;
-    transition: all 0.3s ease;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s, width 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
     font-weight: bold;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
     position: relative;
@@ -130,6 +153,8 @@ button:hover {
     transition: all 0.5s ease;
     position: relative;
     z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .decision-buttons.visible {
@@ -138,10 +163,12 @@ button:hover {
     transform: translateY(0);
 }
 
+/* Кнопка "Yes" по умолчанию делит пространство, но готова расшириться */
 .btn-yes {
     background: linear-gradient(135deg, #9f1239 0%, #4c0519 100%);
     border-color: #f43f5e;
     color: #ffffff;
+    width: 50%;
 }
 
 .btn-yes:hover {
@@ -149,11 +176,32 @@ button:hover {
     box-shadow: 0 0 25px rgba(225, 29, 72, 0.7);
 }
 
+/* Класс расширения кнопки "Yes" на всю ширину при поглощении */
+.btn-yes.full-width {
+    width: 100% !important;
+    background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%);
+    box-shadow: 0 0 25px rgba(225, 29, 72, 0.7);
+}
+
+/* Кнопка "No" по умолчанию */
 .btn-no {
     background: #1c1917;
     border: 1px solid #44403c;
     color: #a8a29e;
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Анимация поглощения: кнопка "No" плавно сжимается в ноль и исчезает */
+.btn-no.absorbed {
+    width: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    opacity: 0 !important;
+    border-color: transparent !important;
+    margin: 0 !important;
+    pointer-events: none !important;
 }
 
 @keyframes sparkle {
